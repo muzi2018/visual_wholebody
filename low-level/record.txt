@@ -1,0 +1,14 @@
+﻿Observation (obs):
+    Joint positions, velocities
+    Contact sensors or gait phase info
+    Command targets (if --observe_gait_commands)
+    Possibly noise from _get_noise_scale_vec()
+
+
+
+Reward:
+Tracks performance: velocity tracking, foot clearance, energy cost
+Done condition: falls, too far from goal, etc.
+
+
+
