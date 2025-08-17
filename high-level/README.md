@@ -80,3 +80,10 @@ It should be a maximum of 60000 timesteps for successful student policy training
 [test_pointcloud.py](./test_pointcloud.py) can be use for checking the pointcloud of the objects.
 
 [train_multistate_asym.py](./train_multistate_asym.py) is a try of using asymetric PPO for training the high-level policy (i.e, vision-based policy and privilaged value function), it is training inefficient and is not comparable to the teacher-student as it cannot parallel too many environments due to the depth images consumption.
+
+
+
+
+command:
+
+python train_multistate.py --rl_device "cuda:0" --sim_device "cuda:0" --timesteps 60000 --headless --task B1Z1PickMulti --experiment_dir b1-pick-multi-teacher --wandb --wandb_project "b1-pick-multi-teacher" --wandb_name "some descriptions" --roboinfo --observe_gait_commands --small_value_set_zero --rand_control --stop_pick
