@@ -17,7 +17,7 @@ env:
   holdSteps: 25
   lastCommands: False
 
-  low_policy_path: "/home/wang/Desktop/visual_wholebody/low-level/logs/b1z1-low/gait_tuning_v1/model_1200.pt" # "data/low_policy/jan17-frontfeet_terrainflat_linrew2_freq2_gaitstopzero_penelizeang_roll_fixbug_35600.pt"
+  low_policy_path: "/home/wang/Desktop/visual_wholebody/low-level/logs/b1z1-low/gait_tuning_v2/model_13000.pt" # "data/low_policy/jan17-frontfeet_terrainflat_linrew2_freq2_gaitstopzero_penelizeang_roll_fixbug_35600.pt"
 
   asset:
     assetRoot: "data/asset"

@@ -36,3 +36,9 @@ Use `--sim_device cpu --rl_device cpu` in case not enough GPU memory.
 ## Suggestions
 
 To choose a good low-level policy that can be further used for training the high-level policy, we suggest you deploy the low-level policy first, and see if it goes well before training a high-level policy.
+
+
+
+command line
+
+python play.py --exptid gait_tuning_v2 --task b1z1 --proj_name b1z1-low --checkpoint 13000 --observe_gait_commands
