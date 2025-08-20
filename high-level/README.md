@@ -83,6 +83,5 @@ It should be a maximum of 60000 timesteps for successful student policy training
 
 command:
 
-python train_multistate.py --rl_device "cuda:0" --sim_device "cuda:0" --timesteps 60000 --headless --task B1Z1PickMulti --experiment_dir b1-pick-multi-teacher --wandb --wandb_project "b1-pick-multi-teacher" --wandb_name "b1-pick-multi-teacher" --roboinfo --observe_gait_commands --small_value_set_zero --rand_control --stop_pick
 
 python play_multistate.py     --task B1Z1PickMulti     --checkpoint /home/wang/Desktop/visual_wholebody/high-level/b1-pick-multi-teacher/b1-pick-multi-teacher/checkpoints/agent_50000.pt  --roboinfo   --observe_gait_commands     --small_value_set_zero     --rand_control     --stop_pick     --rl_device "cuda:0"     --sim_device "cuda:0"
