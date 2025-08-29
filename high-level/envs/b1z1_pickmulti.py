@@ -122,7 +122,7 @@ class B1Z1PickMulti(B1Z1Base):
         
         self.table_heights = torch.zeros(self.num_envs, device=self.device, dtype=torch.float)
         # table
-        self.table_dimz = 0.25
+        self.table_dimz = 0.45
         self.table_dims = gymapi.Vec3(0.6, 1.0, self.table_dimz)
         table_options = gymapi.AssetOptions()
         table_options.fix_base_link = True

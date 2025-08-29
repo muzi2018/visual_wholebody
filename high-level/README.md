@@ -82,6 +82,3 @@ It should be a maximum of 60000 timesteps for successful student policy training
 [train_multistate_asym.py](./train_multistate_asym.py) is a try of using asymetric PPO for training the high-level policy (i.e, vision-based policy and privilaged value function), it is training inefficient and is not comparable to the teacher-student as it cannot parallel too many environments due to the depth images consumption.
 
 command:
-
-
-python play_multistate.py     --task B1Z1PickMulti     --checkpoint /home/wang/Desktop/visual_wholebody/high-level/b1-pick-multi-teacher/b1-pick-multi-teacher/checkpoints/agent_50000.pt  --roboinfo   --observe_gait_commands     --small_value_set_zero     --rand_control     --stop_pick     --rl_device "cuda:0"     --sim_device "cuda:0"

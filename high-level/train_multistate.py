@@ -21,7 +21,7 @@ from envs import *
 from utils.config import load_cfg, get_params, copy_cfg
 import utils.wrapper as wrapper
 
-set_seed(43)
+set_seed(101)
 
 def create_env(cfg, args):
     cfg["env"]["enableDebugVis"] = args.debugvis
@@ -36,6 +36,9 @@ def create_env(cfg, args):
     robot_start_pose = (-2.00, 0, 0.55)
     if args.eval:
         robot_start_pose = (-0.85, 0, 0.55)
+        
+    # python train_multistate.py --rl_device "cuda:0" --sim_device "cuda:0" --timesteps 60000 --headless --task B1Z1PickMulti --experiment_dir b1-pick-multi-teacher --wandb --wandb_project "b1-pick-multi-teacher" --wandb_name "some descriptions" --roboinfo --observe_gait_commands --small_value_set_zero --rand_control --stop_pick
+
     _env = eval(args.task)(cfg=cfg, rl_device=args.rl_device, sim_device=args.sim_device, 
                          graphics_device_id=args.graphics_device_id, headless=args.headless, 
                          use_roboinfo=args.roboinfo, observe_gait_commands=args.observe_gait_commands, no_feature=args.no_feature, mask_arm=args.mask_arm, pitch_control=args.pitch_control,
@@ -110,7 +113,7 @@ def get_trainer(is_eval=False):
     args = get_params()
     args.eval = is_eval
     args.wandb = args.wandb and (not args.eval) and (not args.debug)
-    cfg_file = "b1z1_" + args.task[4:].lower() + ".yaml"
+    cfg_file = "b1z1_" + args.task[4:].lower() + ".yaml" # B1Z1PickMulti -> b1z1_pick_multi.yaml
     file_path = "data/cfg/" + cfg_file
     
     if args.resume:

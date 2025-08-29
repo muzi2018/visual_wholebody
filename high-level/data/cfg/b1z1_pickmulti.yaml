@@ -1,5 +1,5 @@
 env:
-  numEnvs: 1024
+  numEnvs: 2048
   numAgents: 1
   envSpacing: 5.0
   enableDebugVis: False
@@ -217,7 +217,7 @@ sim:
     solver_type: 1
     num_position_iterations: 8
     num_velocity_iterations: 0
-    contact_offset: 0.04
+    contact_offset: 0.08
     rest_offset: 0.0
     bounce_threshold_velocity: 0.2
     max_depenetration_velocity: 50.0
