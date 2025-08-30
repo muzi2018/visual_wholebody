@@ -4,7 +4,7 @@ env:
   envSpacing: 5.0
   enableDebugVis: False
   isFlagrun: False
-  maxEpisodeLength: 150 #200
+  maxEpisodeLength: 200 #200
   pdControl: True
   powerScale: 1.0
   controlFrequencyInv: 4
@@ -228,7 +228,7 @@ reward:
   base_height_target: 0.55
   only_positive_rewards: False
   scales:
-    approaching: 0.5
+    approaching: 5
     lifting: 1.0
     pick_up: 3.5 # 0.5
     acc_penalty: -0.001
