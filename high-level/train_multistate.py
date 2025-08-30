@@ -115,6 +115,59 @@ def get_trainer(is_eval=False):
     args.wandb = args.wandb and (not args.eval) and (not args.debug)
     cfg_file = "b1z1_" + args.task[4:].lower() + ".yaml" # B1Z1PickMulti -> b1z1_pick_multi.yaml
     file_path = "data/cfg/" + cfg_file
+
+    print("Arguments passed to get_trainer:")
+    
+    # Arguments passed to get_trainer:
+    # task: B1Z1PickMulti
+    # timesteps: 60000
+    # control_freq: None
+    # rl_device: cuda:0
+    # sim_device: cuda:0
+    # graphics_device_id: -1
+    # headless: True
+    # wandb: True
+    # wandb_project: b1-pick-multi-teacher
+    # wandb_name: some descriptions
+    # checkpoint: 
+    # experiment_dir: b1-pick-multi-teacher
+    # debugvis: False
+    # save_image: False
+    # debug: False
+    # wrist_seg: False
+    # front_only: False
+    # seperate: False
+    # teacher_ckpt_path: 
+    # resume: False
+    # roboinfo: True
+    # observe_gait_commands: True
+    # small_value_set_zero: True
+    # fixed_base: False
+    # use_tanh: False
+    # reach_only: False
+    # record_video: False
+    # last_commands: False
+    # no_feature: False
+    # mask_arm: False
+    # mlp_stu: False
+    # depth_random: False
+    # pitch_control: False
+    # pred_success: False
+    # near_goal_stop: False
+    # obj_move_prob: 0.0
+    # rand_control: True
+    # arm_delay: False
+    # rand_cmd_scale: False
+    # rand_depth_clip: False
+    # stop_pick: True
+    # arm_kp: 40
+    # arm_kd: 2
+    # table_height: None
+    # seed: 43
+    # eval: False
+    
+    for key, value in vars(args).items():
+        print(f"{key}: {value}")
     
     if args.resume:
         experiment_dir = os.path.join(args.experiment_dir, args.wandb_name)
@@ -133,7 +186,7 @@ def get_trainer(is_eval=False):
             file_path = os.path.join(experiment_dir, cfg_file)
         
         print("Find the latest checkpoint: ", args.checkpoint)
-    print("Using config file: ", file_path)
+    print("Using config file: ", file_path) # data/cfg/b1z1_pickmulti.yaml
         
     cfg = load_cfg(file_path)
     cfg['env']['wandb'] = args.wandb
