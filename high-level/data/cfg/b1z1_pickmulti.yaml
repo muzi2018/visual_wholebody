@@ -228,9 +228,9 @@ reward:
   base_height_target: 0.55
   only_positive_rewards: False
   scales:
-    approaching: 5
+    approaching: 5.0
     lifting: 1.0
-    pick_up: 3.5 # 0.5
+    pick_up: 5.0 # 0.5
     acc_penalty: -0.001
     command_penalty: -1.0
     command_reward: 0.25
