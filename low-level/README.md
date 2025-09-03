@@ -39,4 +39,8 @@ To choose a good low-level policy that can be further used for training the high
 
 command line
 
-python play.py --exptid gait_tuning_v2 --task b1z1 --proj_name b1z1-low --checkpoint 13000 --observe_gait_commands
+python play_multistate.py --task B1Z1PickMulti --checkpoint /home/wang/Desktop/visual_wholebody/high-level/b1-pick-multi-teacher/policy_2/checkpoints/agent_30001.pt --roboinfo --observe_gait_commands --small_value_set_zero --rand_control --stop_pick
+
+
+python train_multistate.py --timesteps 60000 --headless --task B1Z1PickMulti --experiment_dir b1-pick-multi-teacher --w
+andb --wandb_project "b1-pick-multi-teacher" --wandb_name "policy_4" --roboinfo --observe_gait_commands --small_value_set_zero --rand_control --stop_pick
