@@ -228,7 +228,7 @@ reward:
   base_height_target: 0.55
   only_positive_rewards: False
   scales:
-    approaching: 10.0
+    approaching: 5.0
     lifting: 1.0
     pick_up: 5.0 # 0.5
     acc_penalty: -0.001
@@ -236,7 +236,7 @@ reward:
     command_reward: 0.25
     standpick: 0.25 # no found in reward_vec_task.py #
     action_rate: -0.001
-    ee_orn: 0.05 # 0.01
+    ee_orn: 0.1 # 0.01
     base_dir: 0.25
     rad_penalty: 0.0
     base_ang_pen: 0.0
