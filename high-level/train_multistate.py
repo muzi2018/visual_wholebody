@@ -28,22 +28,24 @@ def create_env(cfg, args):
     cfg["env"]["cameraMode"] = "full"
     cfg["env"]["smallValueSetZero"] = args.small_value_set_zero
     if args.last_commands:
-        cfg["env"]["lastCommands"] = True
+        cfg["env"]["lastCommands"] = True # 让观测里包含上一时刻的命令（可帮助策略记忆控制惯性）。
     if args.record_video:
         cfg["record_video"] = True
     if args.control_freq is not None:
         cfg["env"]["controlFrequencyLow"] = int(args.control_freq)
-    robot_start_pose = (-2.00, 0, 0.55)
+    robot_start_pose = (-2.00, 0, 0.55) # 训练时机器人在场景左侧 (-2.0 m)。
     if args.eval:
-        robot_start_pose = (-0.85, 0, 0.55)
-        
+        robot_start_pose = (-0.85, 0, 0.55) # 评估时机器人在场景中间 (-0.85 m)，方便观察。
+                
     # python train_multistate.py --rl_device "cuda:0" --sim_device "cuda:0" --timesteps 60000 --headless --task B1Z1PickMulti --experiment_dir b1-pick-multi-teacher --wandb --wandb_project "b1-pick-multi-teacher" --wandb_name "some descriptions" --roboinfo --observe_gait_commands --small_value_set_zero --rand_control --stop_pick
 
+    # 这里直接把任务名字符串（比如 "B1Z1PickMulti"）当成类名执行！ → 所以你在 envs/下必然有class B1Z1PickMulti(...)`。
     _env = eval(args.task)(cfg=cfg, rl_device=args.rl_device, sim_device=args.sim_device, 
                          graphics_device_id=args.graphics_device_id, headless=args.headless, 
                          use_roboinfo=args.roboinfo, observe_gait_commands=args.observe_gait_commands, no_feature=args.no_feature, mask_arm=args.mask_arm, pitch_control=args.pitch_control,
                          rand_control=args.rand_control, arm_delay=args.arm_delay, robot_start_pose=robot_start_pose,
                          rand_cmd_scale=args.rand_cmd_scale, rand_depth_clip=args.rand_depth_clip, stop_pick=args.stop_pick, table_height=args.table_height, eval=args.eval)
+    
     wrapped_env = wrapper.IsaacGymPreview3Wrapper(_env)
     return wrapped_env
 

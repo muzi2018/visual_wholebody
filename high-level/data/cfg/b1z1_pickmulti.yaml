@@ -11,7 +11,7 @@ env:
   controlFrequencyLow: 8
   imgDelayFrame: 4
 
-  liftedSuccessThreshold: 0.35
+  liftedSuccessThreshold: 0.35 # 物体被抬起多少米才算成功
   liftedInitThreshold: 0.05
   baseObjectDisThreshold: 0.6
   holdSteps: 25
