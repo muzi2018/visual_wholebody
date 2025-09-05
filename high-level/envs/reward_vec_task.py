@@ -3,7 +3,7 @@ import torch
 import torch.nn.functional as F
 import numpy as np
 from isaacgym.torch_utils import *
-
+import wandb
 class RewardVecTask(VecTask):
     # --------------------------------- reward functions ---------------------------------
     def _reward_approaching(self):
@@ -126,8 +126,7 @@ class RewardVecTask(VecTask):
         base_obj_dis = torch.norm(base_obj_dis, dim=-1)
         delta_dis = torch.abs(base_obj_dis - self.base_object_distace_threshold)
         reward = torch.tanh(-10*delta_dis) + 1
-        
-        return reward, reward
+        return reward, base_obj_dis
     
     def _reward_base_dir(self, obj_pos):
         base_x_dir = torch.tensor([1., 0., 0.], device=self.device).repeat(self.num_envs, 1)

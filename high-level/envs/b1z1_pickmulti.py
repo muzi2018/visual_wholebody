@@ -210,8 +210,46 @@ class B1Z1PickMulti(B1Z1Base):
                     "SuccessRate / Bottle": bottle_success_rate,
                     "SuccessRate / Cup": cup_success_rate,
                     "SuccessRate / Drill": drill_success_rate,
-                }
+                },
             }
+            
+            base_height_reward , _ = self._reward_base_height()
+            reward_approaching , _ = self._reward_approaching()
+            reward_lifting, _ = self._reward_lifting()
+            reward_pick_up, _ = self._reward_pick_up()
+            reward_acc_penalty, _ = self._reward_action_penalty()
+            reward_command_reward, _ = self._reward_command_reward()
+            reward_command_penalty, _ = self._reward_command_penalty()
+            reward_action_rate, _ = self._reward_action_rate()
+            reward_ee_orn, _ = self._reward_ee_orn()
+            reward_base_dir, _ = self._reward_base_dir()
+            reward_rad_penalty, _ = self._reward_rad_penalty()
+            reward_base_ang_pen, _ = self._reward_base_ang_pen()
+            reward_base_approaching, _ = self._reward_base_approaching()
+            reward_standpick, _ = self._reward_standpick()
+            reward_grasp_base_height, _ = self._reward_grasp_base_height()
+
+            if self.cfg["env"]["wandb"]:
+                wandb.log({
+                    "Reward / BaseHeight_mean": base_height_reward.mean().item(),
+                    "Reward / Approaching_mean": reward_approaching.mean().item(),
+                    "Reward / Lifting_mean": reward_lifting.mean().item(),
+                    "Reward / PickUp_mean": reward_pick_up.mean().item(),
+                    "Reward / ActionPenalty_mean": reward_acc_penalty.mean().item(),
+                    "Reward / CommandReward_mean": reward_command_reward,
+                    "Reward / CommandPenalty_mean": reward_command_penalty,
+                    "Reward / ActionRate_mean": reward_action_rate.mean().item(),
+                    "Reward / EEOrientation_mean": reward_ee_orn.mean().item(),
+                    "Reward / BaseDir_mean": reward_base_dir.mean().item(),
+                    "Reward / RadiusPenalty_mean": reward_rad_penalty.mean().item(),
+                    "Reward / BaseAngPenalty_mean": reward_base_ang_pen.mean().item(),
+                    "Reward / BaseApproaching_mean": reward_base_approaching.mean().item(),
+                    "Reward / StandPick_mean": reward_standpick,
+                    "Reward / GraspBaseHeight_mean": reward_grasp_base_height.mean().item(),
+                }, step=self.global_step_counter)
+
+            
+            
             if self.pred_success:
                 predlift_success_rate = 0 if self.global_step_counter==0 else (self.predlift_success_counter / self.local_step_counter).mean().item()
                 wandb_dict["success_rate"]["SuccessRate / PredLifted"] = predlift_success_rate
@@ -315,9 +353,7 @@ class B1Z1PickMulti(B1Z1Base):
             else:
                 self.obs_buf[env_ids] = torch.cat([obs, self.action_history_buf[env_ids, -1]], dim=-1)
                 
-        if self.global_step_counter % 10 == 0:
-            print("obs shape:", obs.shape)
-            print("obs sample:", obs[0, :10])
+
 
     
     
