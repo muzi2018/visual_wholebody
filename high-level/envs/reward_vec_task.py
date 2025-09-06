@@ -129,7 +129,7 @@ class RewardVecTask(VecTask):
         return reward, base_obj_dis
     
     def _reward_base_dir(self, obj_pos):
-        base_x_dir = torch.tensor([1., 0., 0.], device=self.device).repeat(self.num_envs, 1)
+        base_x_dir = torch.tensor([0., 0., 1.], device=self.device).repeat(self.num_envs, 1)
         base_x_dir_world = quat_apply(self.base_yaw_quat, base_x_dir)
         obj_dir = obj_pos - self._robot_root_states[:, :3]
         obj_dir[:,:2] = 0.
