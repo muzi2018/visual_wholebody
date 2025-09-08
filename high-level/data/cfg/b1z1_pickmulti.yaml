@@ -1,10 +1,10 @@
 env:
-  numEnvs: 2048
+  numEnvs: 5120
   numAgents: 1
   envSpacing: 5.0
   enableDebugVis: False
   isFlagrun: False
-  maxEpisodeLength: 200 #200
+  maxEpisodeLength: 150 #200
   pdControl: True
   powerScale: 1.0
   controlFrequencyInv: 4
@@ -217,7 +217,7 @@ sim:
     solver_type: 1
     num_position_iterations: 8
     num_velocity_iterations: 0
-    contact_offset: 0.08
+    contact_offset: 0.04
     rest_offset: 0.0
     bounce_threshold_velocity: 0.2
     max_depenetration_velocity: 50.0
@@ -228,21 +228,21 @@ reward:
   base_height_target: 0.55
   only_positive_rewards: False
   scales:
-    approaching: 5.0
+    approaching: 0.5
     lifting: 1.0
-    pick_up: 5.0 # 0.5
+    pick_up: 3.5 # 0.5
     acc_penalty: -0.001
     command_penalty: -1.0
     command_reward: 0.25
     standpick: 0.25 # no found in reward_vec_task.py #
     action_rate: -0.001
-    ee_orn: 0.1 # 0.01
+    ee_orn: 0.01 # 0.01
     base_dir: 0.25
     rad_penalty: 0.0
     base_ang_pen: 0.0
     base_approaching: 0.01 # 0.05
     grasp_base_height: 0.5 # no found in reward_vec_task.py
-    gripper_rate: -0.1 # -0.1
+    gripper_rate: -0.0 # -0.1
 
 sensor:
   depth_clip_lower: 0.15
