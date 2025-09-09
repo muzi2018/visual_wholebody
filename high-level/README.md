@@ -1,4 +1,4 @@
-# Train a task-relevant high-level policy
+﻿# Train a task-relevant high-level policy
 
 This code base only includes the task of picking multiple objects.
 
@@ -83,6 +83,8 @@ It should be a maximum of 60000 timesteps for successful student policy training
 
 command:
 
-python train_multistate.py --timesteps 60000 --headless --task B1Z1PickMulti --experiment_dir b1-pick-multi-teacher --wandb --wandb_project "b1-pick-multi-teacher" --wandb_name "policy2" --roboinfo --observe_gait_commands --small_value_set_zero --rand_control --stop_pick
+clear && python train_multistate.py --timesteps 60000 --headless --task B1Z1PickMulti --experiment_dir b1-pick-multi-teacher --wandb --wandb_project "b1-pick-multi-teacher" --wandb_name "policy2" --roboinfo --observe_gait_commands --small_value_set_zero --rand_control --stop_pick
 
-python play_multistate.py --task B1Z1PickMulti --checkpoint /home/wang/Desktop/visual_wholebody/high-level/b1-pick-multi-teacher/policy_2/checkpoints/agent_30001.pt --roboinfo --observe_gait_commands --small_value_set_zero --rand_control --stop_pick
+clear && python play_multistate.py --task B1Z1PickMulti --checkpoint /home/wang/Desktop/visual_wholebody/high-level/b1-pick-multi-teacher/policy_5/checkpoints/agent_60001.pt --roboinfo --observe_gait_commands --small_value_set_zero --rand_control --stop_pick
+
+clear && python train_multi_bc_deter.py --headless --task B1Z1PickMulti --rl_device "cuda:0" --sim_device "cuda:0" --timesteps 60000 --experiment_dir "b1-pick-multi-stu" --wandb --wandb_project "b1-pick-multi-stu" --wandb_name "policy1" --teacher_ckpt_path "/home/wang/Desktop/visual_wholebody/high-level/b1-pick-multi-teacher/policy_5/checkpoints/agent_60001.pt" --roboinfo --observe_gait_commands --small_value_set_zero --rand_control --stop_pick

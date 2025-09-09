@@ -29,7 +29,7 @@ from learning.dagger import DAGGER_DEFAULT_CONFIG, DAgger
 class Policy(DeterministicMixin, Model):
     def __init__(self, observation_space, action_space, device, clip_actions=False,
                  clip_log_std=True, min_log_std=-20, max_log_std=2, reduction="sum", use_tanh=False,
-                 num_envs=1, num_layers=1, hidden_size=128, sequence_length=16, mode="full", floating_base=False,
+                 num_envs=1, num_layers=1, hidden_size=128, sequence_length=16, mode="front_only", floating_base=False,
                  pitch_control=False, use_roboinfo=True, use_gru=True, deploy=False
                  ):
         Model.__init__(self, observation_space, action_space, device)
@@ -37,6 +37,7 @@ class Policy(DeterministicMixin, Model):
         DeterministicMixin.__init__(self, clip_actions=clip_actions)
 
         self.num_envs = num_envs
+        print("num_envs: ", num_envs)
         self.num_layers = num_layers
         self.hidden_size = hidden_size  # Hout
         self.sequence_length = sequence_length
@@ -231,6 +232,57 @@ def get_trainer(is_eval=False):
     else:
         mode = "full"
     
+    print("Arguments passed to get_trainer:")
+    for key, value in vars(args).items():
+        print(f"{key}: {value}")
+
+    # task: B1Z1PickMulti
+    # timesteps: 60000
+    # control_freq: None
+    # rl_device: cuda:0
+    # sim_device: cuda:0
+    # graphics_device_id: -1
+    # headless: True
+    # wandb: True
+    # wandb_project: b1-pick-multi-stu
+    # wandb_name: policy1
+    # checkpoint: 
+    # experiment_dir: b1-pick-multi-stu
+    # debugvis: False
+    # save_image: False
+    # debug: False
+    # wrist_seg: False
+    # front_only: False
+    # seperate: False
+    # teacher_ckpt_path: /home/wang/Desktop/visual_wholebody/high-level/b1-pick-multi-teacher/policy_5/checkpoints/agent_60001.pt
+    # resume: False
+    # roboinfo: True
+    # observe_gait_commands: True
+    # small_value_set_zero: True
+    # fixed_base: False
+    # use_tanh: False
+    # reach_only: False
+    # record_video: False
+    # last_commands: False
+    # no_feature: False
+    # mask_arm: False
+    # mlp_stu: False
+    # depth_random: False
+    # pitch_control: False
+    # pred_success: False
+    # near_goal_stop: False
+    # obj_move_prob: 0.0
+    # rand_control: True
+    # arm_delay: False
+    # rand_cmd_scale: False
+    # rand_depth_clip: False
+    # stop_pick: True
+    # arm_kp: 40
+    # arm_kd: 2
+    # table_height: None
+    # seed: 43
+    # eval: False
+
     # assert use_roboinfo, "Are you sure not using roboinfo?" # TODO: temporarily for reminder
     args.wandb = args.wandb and (not args.eval) and (not args.debug)
     
