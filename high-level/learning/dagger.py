@@ -16,15 +16,15 @@ from skrl.resources.schedulers.torch import KLAdaptiveLR
 
 # [start-config-dict-torch]
 DAGGER_DEFAULT_CONFIG = {
-    "rollouts": 16,                 # number of rollouts before updating
-    "learning_epochs": 6,           # number of learning epochs during each update
-    "mini_batches": 2,              # number of mini batches during each learning epoch
+    "rollouts": 16,                 # number of rollouts before updating 每次更新前，从环境里跑多少条完整轨迹（或多少个 episode / 实验），用这些轨迹产生本次训练的数据。
+    "learning_epochs": 6,           # number of learning epochs during each update 对一次采样的数据重复训练的次数（每次称为一个 epoch）。
+    "mini_batches": 2,              # number of mini batches during each learning epoch 把一次采样得到的全部数据分为多少小批量用于每次参数更新。
 
-    "discount_factor": 0.99,        # discount factor (gamma)
+    "discount_factor": 0.99,        # discount factor (gamma) 对未来奖励的权重衰减因子；越接近 1 越重视远期奖励。
     "lambda": 0.95,                 # TD(lambda) coefficient (lam) for computing returns and advantages
 
-    "learning_rate": 1e-3,                  # learning rate
-    "learning_rate_scheduler": None,        # learning rate scheduler class (see torch.optim.lr_scheduler)
+    "learning_rate": 1e-3,                  # learning rate 参数更新步长。
+    "learning_rate_scheduler": None,        # learning rate scheduler class (see torch.optim.lr_scheduler) 训练过程中动态调整 lr（如线性衰减、余弦退火、按验证性能降低等）。
     "learning_rate_scheduler_kwargs": {},   # learning rate scheduler's kwargs (e.g. {"step_size": 1e-3})
 
     "state_preprocessor": None,             # state preprocessor class (see skrl.resources.preprocessors)
@@ -32,29 +32,29 @@ DAGGER_DEFAULT_CONFIG = {
     "value_preprocessor": None,             # value preprocessor class (see skrl.resources.preprocessors)
     "value_preprocessor_kwargs": {},        # value preprocessor's kwargs (e.g. {"size": 1})
 
-    "random_timesteps": 0,          # random exploration steps
-    "learning_starts": 0,           # learning starts after this many steps
+    "random_timesteps": 0,          # random exploration steps 训练开始前让 agent 随机执行多少步来收集初始多样化体验（避免初始策略太单一）。
+    "learning_starts": 0,           # learning starts after this many steps 执行多少步后才开始训练（保证缓冲区里有最小量的数据）。
 
-    "grad_norm_clip": 0.5,              # clipping coefficient for the norm of the gradients
-    "ratio_clip": 0.2,                  # clipping coefficient for computing the clipped surrogate objective
-    "value_clip": 0.2,                  # clipping coefficient for computing the value loss (if clip_predicted_values is True)
-    "clip_predicted_values": False,     # clip predicted values during value loss computation
+    "grad_norm_clip": 0.5,              # clipping coefficient for the norm of the gradients 对梯度做 L2 裁剪，限制其范数不超过该值，防止梯度爆炸和突变。
+    "ratio_clip": 0.2,                  # clipping coefficient for computing the clipped surrogate objective 裁剪策略概率比 (π_new/π_old) 的上下界，防止一次更新改变策略太多。
+    "value_clip": 0.2,                  # clipping coefficient for computing the value loss (if clip_predicted_values is True) 限制 value 输出变化（类似于对 value-target 做裁剪），避免 value head 在一次 update 中跳变过大。
+    "clip_predicted_values": False,     # clip predicted values during value loss computation 控制是否启用这种裁剪行为。
 
-    "entropy_loss_scale": 0.0,      # entropy loss scaling factor
-    "value_loss_scale": 1.0,        # value loss scaling factor
+    "entropy_loss_scale": 0.0,      # entropy loss scaling factor 策略熵正则的系数；熵越大→策略越随机→探索越多。
+    "value_loss_scale": 1.0,        # value loss scaling factor 在总损失中价值函数误差占的权重。
 
-    "kl_threshold": 0,              # KL divergence threshold for early stopping
+    "kl_threshold": 0,              # KL divergence threshold for early stopping 若一轮训练导致新旧策略间的 KL 散度超过该阈值，则停止当前 epoch 的进一步训练（early stop）。
 
-    "rewards_shaper": None,         # rewards shaping function: Callable(reward, timestep, timesteps) -> reward
-    "time_limit_bootstrap": False,  # bootstrap at timeout termination (episode truncation)
+    "rewards_shaper": None,         # rewards shaping function: Callable(reward, timestep, timesteps) -> reward 一个函数，用来变换/调整原始奖励（r' = f(r, s, a, next_s)），用以引导学习（例如稀疏奖励的密集化）。
+    "time_limit_bootstrap": False,  # bootstrap at timeout termination (episode truncation) 如果一个 episode 因“时间限制”而中断（不是因为到达终止状态），是否对末尾状态使用 value 网络来做 bootstrap（估计其后续回报）。
 
     "experiment": {
-        "directory": "",            # experiment's parent directory
+        "directory": "",            # experiment's parent directory 实验数据、日志、检查点存放位置与名称，便于组织与复现实验。
         "experiment_name": "",      # experiment name
-        "write_interval": 250,      # TensorBoard writing interval (timesteps)
+        "write_interval": 250,      # TensorBoard writing interval (timesteps) 多少时间步写一次日志（TensorBoard、文件等）。取值要平衡 IO 开销与监控频率（比如 1000 步或 5000 步）。
 
-        "checkpoint_interval": 1000,        # interval for checkpoints (timesteps)
-        "store_separately": False,          # whether to store checkpoints separately
+        "checkpoint_interval": 1000,        # interval for checkpoints (timesteps) 多少时间步保存一次模型（防止训练中断丢失进度）。真实机器人建议更频繁保存（例如每 5000 步），仿真可更稀疏。
+        "store_separately": False,          # whether to store checkpoints separately 若 True 每个 checkpoint 不覆盖，保存为新文件，方便回溯。若磁盘受限可设 False 覆盖旧文件。
 
         "wandb": False,             # whether to use Weights & Biases
         "wandb_kwargs": {}          # wandb kwargs (see https://docs.wandb.ai/ref/python/init)
