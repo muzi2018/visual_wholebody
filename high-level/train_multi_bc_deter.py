@@ -27,20 +27,20 @@ from learning.dagger import DAGGER_DEFAULT_CONFIG, DAgger
     
 # define models (stochastic and deterministic models) using mixins
 class Policy(DeterministicMixin, Model):
-    def __init__(self, observation_space, action_space, device, clip_actions=False,
-                 clip_log_std=True, min_log_std=-20, max_log_std=2, reduction="sum", use_tanh=False,
+    def __init__(self, observation_space, action_space, device, 
+                 clip_actions=False, clip_log_std=True, min_log_std=-20, max_log_std=2, reduction="sum", use_tanh=False,
                  num_envs=1, num_layers=1, hidden_size=128, sequence_length=16, mode="front_only", floating_base=False,
                  pitch_control=False, use_roboinfo=True, use_gru=True, deploy=False
                  ):
-        Model.__init__(self, observation_space, action_space, device)
+        Model.__init__(self, observation_space, action_space, device) # observation_space -> network -> action_space 
         # GaussianMixin.__init__(self, clip_actions, clip_log_std, min_log_std, max_log_std, reduction)
         DeterministicMixin.__init__(self, clip_actions=clip_actions)
 
-        self.num_envs = num_envs
-        print("num_envs: ", num_envs)
-        self.num_layers = num_layers
+        self.num_envs = num_envs 
+        # print("num_envs: ", num_envs)
+        self.num_layers = num_layers # the number of layers
         self.hidden_size = hidden_size  # Hout
-        self.sequence_length = sequence_length
+        self.sequence_length = sequence_length 
         self.mode = mode
         self.use_roboinfo = use_roboinfo
         self.pitch_control = pitch_control
@@ -52,13 +52,13 @@ class Policy(DeterministicMixin, Model):
         if self.pitch_control or self.floating_base:
             input_size += 1
         if (not self.floating_base) and use_roboinfo:
-            input_size += 24
+            input_size += 24 # position + velocity + joint position
 
         if self.use_gru:
             self.gru = nn.GRU(input_size=input_size, #23 + 9 + 64, #self.num_observations, + self.num_actions + self.num_features
-                            hidden_size=self.hidden_size,
-                            num_layers=self.num_layers,
-                            batch_first=True)  # batch_first -> (batch, sequence, features)
+                              hidden_size=self.hidden_size,
+                              num_layers=self.num_layers,
+                              batch_first=True)  # batch_first -> (batch, sequence, features)
         if not self.use_gru:
             self.mlp = nn.Sequential(nn.Linear(input_size, self.hidden_size),
                                         nn.ReLU(),
@@ -326,6 +326,35 @@ def get_trainer(is_eval=False):
     if args.pred_success:
         student_action_space = (student_action_space.shape[0]+1,)
     
+    # ------------------- DAgger CONFIG -------------------
+    # 
+    #  class Policy(DeterministicMixin, Model):
+    #     def __init__(self, observation_space, action_space, device, 
+    #                  clip_actions=False, clip_log_std=True, min_log_std=-20, max_log_std=2, reduction="sum", use_tanh=False,
+    #                  num_envs=1, num_layers=1, hidden_size=128, sequence_length=16, mode="front_only", floating_base=False,
+    #                  pitch_control=False, use_roboinfo=True, use_gru=True, deploy=False
+    #                  ):
+    #   Policy: 
+    #  - observation_space: student_obs_space
+    #  - action_space: student_action_space
+    #  - device: device
+    #  - clip_actions: False
+    #  - clip_log_std: True
+    #  - min_log_std: -20
+    #  - max_log_std: 2
+    #  - reduction: "sum"
+    #  - use_tanh: args.use_tanh
+    #  - num_envs: env.num_envs
+    #  - num_layers: 1
+    #  - hidden_size: 128
+    #  - sequence_length: 16
+    #  - mode: mode
+    #  - floating_base: cfg["env"].get("floatingBase", False)
+    #  - pitch_control: args.pitch_control
+    #  - use_roboinfo: use_roboinfo
+    #  - use_gru: not args.mlp_stu
+    #  - deploy: False
+    # 
     model_dagger = {}
     model_dagger["policy"] = Policy(student_obs_space, student_action_space, device, num_envs=env.num_envs, mode=mode, use_roboinfo=use_roboinfo, use_tanh=args.use_tanh, use_gru=not args.mlp_stu, pitch_control=args.pitch_control, floating_base=cfg["env"].get("floatingBase", False))
     
