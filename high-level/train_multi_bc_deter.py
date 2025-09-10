@@ -64,7 +64,8 @@ class Policy(DeterministicMixin, Model):
                                         nn.ReLU(),
                                         nn.Linear(self.hidden_size, self.hidden_size),
                                         nn.Tanh())
-            
+        
+        print("camera_mode: ", mode)
         # self.depth_extractor = DepthFeatureExtractor(input_dim=2, output_dim=64)
         if self.mode == "full":
             self.depth_extractor = DepthOnlyFCBackbone54x96(latent_dim=64, output_activation=None, num_channel=12) # TODO: modify the input channel
@@ -308,6 +309,7 @@ def get_trainer(is_eval=False):
         print("Find the latest checkpoint: ", args.checkpoint)
         
     cfg = load_cfg(file_path)
+    print("file_path: ", file_path)
     cfg['env']['wandb'] = args.wandb
     cfg['env']["useTanh"] = args.use_tanh
     cfg['env']["near_goal_stop"] = args.near_goal_stop
