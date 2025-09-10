@@ -88,3 +88,5 @@ clear && python train_multistate.py --timesteps 60000 --headless --task B1Z1Pick
 clear && python play_multistate.py --task B1Z1PickMulti --checkpoint /home/wang/Desktop/visual_wholebody/high-level/b1-pick-multi-teacher/policy_5/checkpoints/agent_60001.pt --roboinfo --observe_gait_commands --small_value_set_zero --rand_control --stop_pick
 
 clear && python train_multi_bc_deter.py --headless --task B1Z1PickMulti --rl_device "cuda:0" --sim_device "cuda:0" --timesteps 60000 --experiment_dir "b1-pick-multi-stu" --wandb --wandb_project "b1-pick-multi-stu" --wandb_name "policy1" --teacher_ckpt_path "/home/wang/Desktop/visual_wholebody/high-level/b1-pick-multi-teacher/policy_5/checkpoints/agent_60001.pt" --roboinfo --observe_gait_commands --small_value_set_zero --rand_control --stop_pick
+
+python play_multi_bc_deter.py --task B1Z1PickMulti --checkpoint "/home/wang/Desktop/visual_wholebody/high-level/b1-pick-multi-stu/policy1/checkpoints/agent_60001.pt"  --roboinfo --observe_gait_commands --small_value_set_zero --rand_control --stop_pick
